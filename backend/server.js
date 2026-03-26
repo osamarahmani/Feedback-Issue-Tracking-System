@@ -9,8 +9,8 @@ app.use(cors());
 app.use(express.json());
 
 /* 🔗 MongoDB Connection (FIXED) */
-mongoose.connect("mongodb://127.0.0.1:27017/issueTrackerDB")
-  .then(() => console.log("MongoDB Connected"))
+mongoose.connect("mongodb+srv://lakshithadevi2020_db_user:lakshitha123@cluster0.pkyqne4.mongodb.net/?appName=Cluster0")
+  .then(() => console.log("MongoDB atlas Connected"))
   .catch(err => console.log("DB Error:", err));
 
 /* =========================
@@ -124,6 +124,29 @@ app.post("/login", async (req, res) => {
     } else {
       res.json({ message: "Invalid password" });
     }
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/* 🔑 Forgot Password */
+app.post("/forgot-password", async (req, res) => {
+  try {
+    const { email, newPassword } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.json({ message: "User not found" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    res.json({ message: "Password updated successfully" });
 
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -1,99 +1,65 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import Sidebar from "../components/Sidebar";
+import Topbar from "../components/Topbar";
+import KanbanBoard from "../components/KanbanBoard";
+import CreateIssueModal from "../components/CreateIssueModel";
+import { useLocation } from "react-router-dom";
 import "./Dashboard.css";
 
-const Dashboard = () => {
-
+export default function Dashboard() {
+  const [config, setConfig] = useState(null);
   const [issues, setIssues] = useState([]);
-  const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("");
-
-  /* FETCH ISSUES */
-  const fetchIssues = async () => {
-    const res = await axios.get("http://localhost:5000/issues");
-    setIssues(res.data);
-  };
+  const [showModal, setShowModal] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
-    fetchIssues();
+  if (location.pathname === "/create") {
+    setShowModal(true);
+  } else {
+    setShowModal(false);
+  }
+}, [location]);
+
+  useEffect(() => {
+    const storedConfig = JSON.parse(localStorage.getItem("config"));
+    setConfig(storedConfig);
+
+    const storedIssues = JSON.parse(localStorage.getItem("issues")) || [];
+    setIssues(storedIssues);
   }, []);
 
-  /* CREATE ISSUE */
-  const createIssue = async () => {
-    await axios.post("http://localhost:5000/issues", {
-      title,
-      description: desc,
-      status: "open",
-      priority: "medium"
-    });
-
-    setTitle("");
-    setDesc("");
-    fetchIssues();
+  const handleCreateIssue = (newIssue) => {
+    const updated = [...issues, newIssue];
+    setIssues(updated);
+    localStorage.setItem("issues", JSON.stringify(updated));
   };
 
-  /* UPDATE STATUS */
-  const updateStatus = async (id, status) => {
-    await axios.put(`http://localhost:5000/issues/${id}`, { status });
-    fetchIssues();
-  };
+  if (!config) return <h2>Loading...</h2>;
 
   return (
     <div className="dashboard">
+      <Sidebar />
 
-      <h2>Issue Dashboard</h2>
-
-      {/* CREATE ISSUE */}
-      <div className="create-box">
-        <input
-          type="text"
-          placeholder="Issue Title"
-          value={title}
-          onChange={(e)=>setTitle(e.target.value)}
+      <div className="main">
+        <Topbar
+          spaceName={config.spaceName}
+          onCreate={() => setShowModal(true)}
         />
 
-        <input
-          type="text"
-          placeholder="Description"
-          value={desc}
-          onChange={(e)=>setDesc(e.target.value)}
-        />
+        <KanbanBoard workflow={config.workflow} issues={issues} />
 
-        <button onClick={createIssue}>Create Issue</button>
+        {/* MODAL */}
+        {showModal && (
+          <CreateIssueModal
+            onClose={() => setShowModal(false)}
+            onCreate={(issue) => {
+              handleCreateIssue(issue);
+              setShowModal(false);
+            }}
+            workflow={config.workflow}
+          />
+        )}
       </div>
-
-      {/* ISSUE LIST */}
-      <table>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Status</th>
-            <th>Priority</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {issues.map((issue) => (
-            <tr key={issue._id}>
-              <td>{issue.title}</td>
-              <td>{issue.status}</td>
-              <td>{issue.priority}</td>
-              <td>
-                <button onClick={() => updateStatus(issue._id, "in-progress")}>
-                  In Progress
-                </button>
-                <button onClick={() => updateStatus(issue._id, "closed")}>
-                  Close
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
     </div>
   );
-};
-
-export default Dashboard;
+}

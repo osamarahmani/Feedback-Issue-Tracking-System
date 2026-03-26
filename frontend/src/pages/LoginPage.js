@@ -85,7 +85,12 @@ const handleLogin = async () => {
             </div>
           </div>
 
-          <p className="forgot">Forgot your password?</p>
+          <p 
+  className="forgot" 
+  onClick={() => navigate("/forgot-password")}
+>
+  Forgot your password?
+</p>
 
          <button className="login-btn" onClick={handleLogin}>
   LOGIN
