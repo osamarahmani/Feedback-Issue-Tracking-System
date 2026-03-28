@@ -41,9 +41,13 @@ console.log("Expected:", ADMIN_EMAIL, ADMIN_PASSWORD);
 
     if (res.data.message === "Login Success") {
       localStorage.setItem("role", "user");
-      localStorage.setItem("userId", res.data.userId);
 
-      navigate("/dashboard");
+localStorage.setItem("userId", res.data.user._id);
+localStorage.setItem("userEmail", res.data.user.email);
+localStorage.setItem("userName", res.data.user.name);
+ localStorage.setItem("config", "true");
+
+navigate("/app/dashboard");
     }
 
   } catch (err) {

@@ -14,6 +14,18 @@ export default function CreateIssueModal({ onClose, onCreate }) {
     dueDate: "",
     assignedTo: ""
   });
+   
+  // ✅ ADD HERE 👇
+  const getPoints = (priority) => {
+    switch (priority) {
+      case "Low": return 5;
+      case "Medium": return 10;
+      case "High": return 20;
+      case "Critical": return 30;
+      case "Blocker": return 50;
+      default: return 0;
+    }
+  };
 
   const next = () => setStep(step + 1);
   const back = () => setStep(step - 1);
@@ -27,7 +39,11 @@ const handleSubmit = async () => {
       ...data,
       assignedTo: "Not Assigned", // ✅ DEFAULT
       createdBy: userId,
-      status: "To Do"
+      status: "To Do",
+        // ✅ FIXED
+      createdAt: new Date().toISOString(),
+      createdTime: new Date().toLocaleString(),
+      points: getPoints(data.priority)
     };
 
     const res = await axios.post(
@@ -35,7 +51,7 @@ const handleSubmit = async () => {
       newIssue
     );
 
-    onCreate(res.data);
+    onCreate(res.data.issue);
     onClose();
 
   } catch (err) {
@@ -45,10 +61,15 @@ const handleSubmit = async () => {
 };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal card">
+  <div className="modal-overlay1" onClick={onClose}>
+    
+    {/* 🔥 STOP PROPAGATION */}
+    <div
+  className="modal1"
+  onClick={(e) => e.stopPropagation()}
+>
 
-        <div className="step-indicator">Step {step} of 5</div>
+      <div className="step-indicator">Step {step} of 5</div>
 
         {/* STEP 1: TYPE */}
         {step === 1 && (
@@ -56,7 +77,14 @@ const handleSubmit = async () => {
             <h2>Select Issue Type</h2>
 
             <div className="grid">
-              {["🐞 Bug", "📌 Task", "⭐ Feature", "📖 Story"].map((item) => {
+              {[
+  "🐞 Bug",
+  "📌 Task",
+  "⭐ Feature",
+  "📖 Story",
+  "⚡ Improvement",
+  "🔧 Maintenance"
+].map((item) => {
                 const value = item.slice(2);
                 return (
                   <div
@@ -78,7 +106,7 @@ const handleSubmit = async () => {
             <h2>Issue Details</h2>
 
             <input
-              className="input"
+              className="input1"
               placeholder="Title"
               onChange={(e) =>
                 setData({ ...data, title: e.target.value })
@@ -86,7 +114,7 @@ const handleSubmit = async () => {
             />
 
             <textarea
-              className="input"
+              className="input1"
               placeholder="Description"
               onChange={(e) =>
                 setData({ ...data, description: e.target.value })
@@ -101,7 +129,7 @@ const handleSubmit = async () => {
             <h2>Priority</h2>
 
             <div className="grid">
-              {["Low", "Medium", "High"].map((p) => (
+              {["Low", "Medium", "High", "Critical", "Blocker"].map((p) => (
                 <div
                   key={p}
                   className={`option ${data.priority === p ? "active" : ""}`}
@@ -120,14 +148,14 @@ const handleSubmit = async () => {
   <>
     <h2>Set Deadline</h2>
 
-    <label>Due Date</label>
     <input
       type="date"
-      className="input"
+      className="input1"
       onChange={(e) =>
         setData({ ...data, dueDate: e.target.value })
       }
     />
+    <i>Maximum of 1 week from now</i>
   </>
 )}
         {/* STEP 5: TAGS */}
@@ -136,7 +164,18 @@ const handleSubmit = async () => {
             <h2>Add Tags</h2>
 
             <div className="grid">
-              {["UI", "Backend", "API", "Urgent", "Testing"].map((tag) => (
+              {[
+  "UI",
+  "Backend",
+  "API",
+  "Urgent",
+  "Testing",
+  "Security",
+  "Performance",
+  "Database",
+  "BugFix",
+  "Enhancement"
+].map((tag) => (
                 <label key={tag} className="option">
                   <input
                     type="checkbox"
@@ -154,7 +193,7 @@ const handleSubmit = async () => {
               ))}
             </div>
 
-            <button className="submit-btn" onClick={handleSubmit}>
+            <button className="submit-btn1" onClick={handleSubmit}>
               🚀 Create Issue
             </button>
           </>
@@ -165,7 +204,7 @@ const handleSubmit = async () => {
           {step > 1 && <button onClick={back}>Back</button>}
           {step < 5 && <button onClick={next}>Next</button>}
         </div>
-
+        
       </div>
     </div>
   );

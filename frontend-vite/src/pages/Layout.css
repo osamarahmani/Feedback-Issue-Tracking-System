@@ -1,0 +1,19 @@
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+/* RIGHT SIDE */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #f7fbfe;
+}
+
+/* CONTENT AREA */
+.content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}

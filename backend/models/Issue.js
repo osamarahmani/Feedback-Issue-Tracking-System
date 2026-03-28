@@ -13,6 +13,17 @@ const issueSchema = new mongoose.Schema({
     type: String,
     default: "To Do"
   },
+  // ✅ ADD THESE
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  createdTime: {
+    type: String
+  },
+  points: {
+    type: Number
+  },
   messages: [
     {
       sender: String,

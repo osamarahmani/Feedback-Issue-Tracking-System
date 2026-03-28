@@ -7,7 +7,7 @@ export default function IssueChatModal({ issue, onClose, updateIssues }) {
 
   const chatEndRef = useRef(null);
 
-  // 🔥 Auto scroll to bottom
+  // 🔥 Auto scroll
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [issue.messages]);
@@ -39,13 +39,18 @@ export default function IssueChatModal({ issue, onClose, updateIssues }) {
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="chat-modal">
+    // ✅ CLICK OUTSIDE CLOSE
+    <div className="modal-overlay" onClick={onClose}>
+      
+      {/* ❌ STOP INSIDE CLICK */}
+      <div
+        className="chat-modal"
+        onClick={(e) => e.stopPropagation()}
+      >
 
         {/* HEADER */}
         <div className="chat-header">
           <h3>💬 Issue Chat</h3>
-          <button className="close-btn" onClick={onClose}>✖</button>
         </div>
 
         {/* CHAT BODY */}
@@ -69,7 +74,7 @@ export default function IssueChatModal({ issue, onClose, updateIssues }) {
           <div ref={chatEndRef} />
         </div>
 
-        {/* INPUT AREA */}
+        {/* INPUT */}
         <div className="chat-input">
           <input
             placeholder="Type your message..."
@@ -77,9 +82,9 @@ export default function IssueChatModal({ issue, onClose, updateIssues }) {
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           />
-
           <button onClick={sendMessage}>Send</button>
         </div>
+
       </div>
     </div>
   );

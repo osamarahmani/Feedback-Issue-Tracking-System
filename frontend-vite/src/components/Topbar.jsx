@@ -4,11 +4,30 @@ import "./Topbar.css";
 export default function Topbar({ spaceName, onCreate }) {
   return (
     <div className="topbar">
-      <h3>{spaceName}</h3>
 
+      {/* LEFT */}
+      <div className="topbar-left">
+        <h3>{spaceName || "Tarcin Issue Tracker"}</h3>
+      </div>
+
+      {/* RIGHT */}
       <div className="topbar-actions">
-        <input placeholder="Search issues..." />
-        <button onClick={onCreate}>Create</button>
+
+        {/* SEARCH */}
+        <div className="search-box">
+          <input placeholder="🔍 Search issues..." />
+        </div>
+
+        {/* CREATE BUTTON */}
+        <button className="create-btn" onClick={onCreate}>
+          + Create
+        </button>
+
+        {/* PROFILE */}
+        <div className="profile">
+          <span>👤</span>
+        </div>
+
       </div>
     </div>
   );

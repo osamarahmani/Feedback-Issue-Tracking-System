@@ -1,40 +1,106 @@
-/* OVERLAY */
-.modal-overlay {
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* =========================
+   OVERLAY
+========================= */
+.modal-overlay1 {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.45);
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
-/* CARD */
-.card {
-  width: 550px;
-  background: white;
+/* =========================
+   MODAL CARD
+========================= */
+.modal1 {
+  position: relative;
+  width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 14px;
   padding: 35px;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+
+  /* 🔥 animation */
+  animation: fadeInScale 0.3s ease;
 }
 
-/* STEP */
+/* =========================
+   ANIMATION
+========================= */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* =========================
+   CLOSE BUTTON
+========================= */
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 18px;
+  font-size: 22px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #6b778c;
+  transition: 0.2s;
+}
+
+.close-btn:hover {
+  color: #ff4d4f;
+  transform: scale(1.1);
+}
+
+/* =========================
+   STEP INDICATOR
+========================= */
 .step-indicator {
   text-align: right;
   font-size: 12px;
   color: #6b778c;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
-/* GRID */
+/* =========================
+   HEADINGS
+========================= */
+h2 {
+  margin-bottom: 20px;
+  color: #172b4d;
+}
+
+/* =========================
+   GRID OPTIONS
+========================= */
+/* GRID LAYOUT */
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(2, 1fr); /* ✅ 2 per row */
+  gap: 10px;
 }
-
 /* OPTION */
 .option {
   padding: 12px;
@@ -42,6 +108,12 @@
   border-radius: 8px;
   background: #fafbfc;
   cursor: pointer;
+  transition: 0.2s;
+}
+
+.option:hover {
+  border-color: #0052cc;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
 }
 
 .option.active {
@@ -50,16 +122,33 @@
   color: #0052cc;
 }
 
-/* INPUT */
-.input {
+/* =========================
+   INPUTS
+========================= */
+.input1 {
   width: 100%;
   padding: 12px;
-  margin-bottom: 10px;
-  border-radius: 6px;
+  margin-bottom: 12px;
+  border-radius: 8px;
   border: 1px solid #ccc;
+  outline: none;
+  transition: 0.2s;
 }
 
-/* NAV */
+.input1.submit-btn1:hover {
+  border-color: #0052cc;
+  box-shadow: 0 0 0 2px rgba(0,82,204,0.1);
+}
+
+/* TEXTAREA FIX */
+textarea.input1 {
+  min-height: 90px;
+  resize: none;
+}
+
+/* =========================
+   NAV BUTTONS
+========================= */
 .nav {
   display: flex;
   justify-content: space-between;
@@ -74,6 +163,7 @@ button {
   color: white;
   border-radius: 6px;
   cursor: pointer;
+  transition: 0.2s;
 }
 
 button:hover {
@@ -81,8 +171,36 @@ button:hover {
 }
 
 /* SUBMIT */
-.submit-btn {
+.submit-btn1 {
   width: 100%;
-  margin-top: 10px;
+  margin-top: 12px;
   background: #0052cc;
 }
+
+.submit-btn1:hover {
+  background: #003f9e;
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+.modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+/* EXTRA PRIORITIES */
+.priority.critical {
+  background: #ffe6e6;
+  color: #d60000;
+}
+
+.priority.blocker {
+  background: #2d2d2d;
+  color: #ffffff;
+}
+

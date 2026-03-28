@@ -28,14 +28,11 @@ export default function Reports() {
   useEffect(() => {
     fetch("http://localhost:5000/issues")
       .then((res) => res.json())
-      .then((data) => {
-        console.log("API DATA:", data); // 🔍 debug
-        setIssues(data);
-      })
+      .then((data) => setIssues(data))
       .catch((err) => console.error(err));
   }, []);
 
-  // 🎯 POINT FALLBACK FUNCTION
+  // 🎯 POINT FUNCTION (fallback)
   const getPoints = (priority) => {
     switch (priority) {
       case "Low": return 5;
@@ -47,12 +44,9 @@ export default function Reports() {
     }
   };
 
-  // ✅ IMPORTANT FIX (avoid empty filter issue)
+  // ✅ FILTER USER ISSUES
   const userIssues = issues.filter(
-    (i) =>
-      i.createdBy === userId ||
-      i.assignedTo === userId ||
-      i.assignedTo === "Not Assigned" // optional safety
+    (i) => i.createdBy === userId || i.assignedTo === userId
   );
 
   // ✅ STATUS COUNT
@@ -60,7 +54,7 @@ export default function Reports() {
   const progress = userIssues.filter((i) => i.status === "In Progress").length;
   const done = userIssues.filter((i) => i.status === "Done").length;
 
-  // ✅ TOTAL POINTS (ALL ISSUES)
+  // ✅ TOTAL POINTS (ALL)
   const totalPoints = userIssues.reduce((sum, issue) => {
     return sum + (issue.points || getPoints(issue.priority));
   }, 0);

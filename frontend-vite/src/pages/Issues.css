@@ -1,0 +1,202 @@
+/* PAGE */
+.issues-page {
+  padding: 20px;
+  background: #f4f6f8;
+  min-height: 100vh;
+}
+body.dark .issues-page,
+body.dark .home {
+  background: #0f172a;
+}
+
+/* HEADER */
+.issues-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.issues-header h2 {
+  color: #172b4d;
+}
+
+.issues-header button {
+  background: linear-gradient(135deg, #1da1d2, #0d8ecf);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.issues-header button:hover {
+  background: #003f9e;
+}
+
+/* KANBAN BOARD */
+.issues-board {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* COLUMN */
+.column {
+  flex: 1;
+  background: #ebecf0;
+  padding: 12px;
+  border-radius: 10px;
+  min-height: 400px;
+}
+
+/* COLUMN TITLE */
+.column h3 {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #5e6c84;
+}
+
+/* ISSUE CARD */
+.issue-card {
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.issue-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* TITLE */
+.issue-card h3 {
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #172b4d;
+}
+
+/* ROW */
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+/* TYPE */
+.type {
+  font-size: 12px;
+  background: #dfe1e6;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+/* PRIORITY COLORS */
+.priority {
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.priority.low {
+  background: #e3fcef;
+  color: #006644;
+}
+
+.priority.medium {
+  background: #fff4e5;
+  color: #974f0c;
+}
+
+.priority.high {
+  background: #ffebe6;
+  color: #bf2600;
+}
+
+.priority.critical {
+  background: #ffe6e6;
+  color: #d60000;
+}
+
+.priority.blocker {
+  background: #172b4d;
+  color: white;
+}
+
+/* DESCRIPTION */
+.desc {
+  font-size: 12px;
+  color: #5e6c84;
+  margin-bottom: 6px;
+}
+
+/* STATUS */
+.status {
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+/* TAGS */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 8px;
+}
+
+.tags span {
+  font-size: 11px;
+  background: #e9f2ff;
+  color: #0052cc;
+  padding: 3px 6px;
+  border-radius: 6px;
+}
+
+/* FOOTER */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #6b778c;
+  margin-bottom: 6px;
+}
+
+/* ✅ CREATED TIME */
+.created-time {
+  font-size: 11px;
+  color: #6b778c;
+  margin-top: 4px;
+}
+
+/* ✅ POINTS */
+.points {
+  font-size: 12px;
+  font-weight: bold;
+  color: #ff9800;
+  margin-top: 4px;
+}
+
+/* EMPTY */
+.empty {
+  text-align: center;
+  color: #6b778c;
+  margin-top: 20px;
+}
+
+/* 📱 MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+  .issues-board {
+    flex-direction: column;
+  }
+
+  .column {
+    width: 100%;
+  }
+
+  .issue-card {
+    font-size: 13px;
+  }
+}

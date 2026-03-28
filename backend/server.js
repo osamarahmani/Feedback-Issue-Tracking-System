@@ -132,10 +132,13 @@ app.post("/login", async (req, res) => {
 
     if (isMatch) {
       res.json({
-        message: "Login Success",
-        userId: user._id,
-        email: user.email
-      });
+  message: "Login Success",
+  user: {
+    _id: user._id,
+    name: user.name,
+    email: user.email
+  }
+});
     } else {
       res.json({ message: "Invalid password" });
     }
