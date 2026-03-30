@@ -1,173 +1,64 @@
-import React, { useEffect, useState } from "react";
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  CategoryScale,
-  LinearScale,
-  BarElement
-} from "chart.js";
-import { Pie, Bar } from "react-chartjs-2";
-import "./Reports.css";
+// controllers/issueController.js
 
-ChartJS.register(
-  ArcElement,
-  Tooltip,
-  Legend,
-  CategoryScale,
-  LinearScale,
-  BarElement
-);
+const Issue = require("../models/Issue");
+const User = require("../models/User");
 
-export default function Reports() {
-  const [issues, setIssues] = useState([]);
-  const userId = localStorage.getItem("userId");
+// 🎯 POINTS FUNCTION
+const getPoints = (priority) => {
+  switch (priority) {
+    case "Low": return 5;
+    case "Medium": return 10;
+    case "High": return 20;
+    case "Critical": return 30;
+    case "Blocker": return 50;
+    default: return 0;
+  }
+};
 
-  // ✅ FETCH FROM BACKEND
-  useEffect(() => {
-    fetch("http://localhost:5000/issues")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("API DATA:", data); // 🔍 debug
-        setIssues(data);
-      })
-      .catch((err) => console.error(err));
-  }, []);
+// ✅ CREATE ISSUE
+exports.createIssue = async (req, res) => {
+  try {
+    const data = req.body;
 
-  // 🎯 POINT FALLBACK FUNCTION
-  const getPoints = (priority) => {
-    switch (priority) {
-      case "Low": return 5;
-      case "Medium": return 10;
-      case "High": return 20;
-      case "Critical": return 30;
-      case "Blocker": return 50;
-      default: return 0;
+    const issue = await Issue.create({
+      ...data,
+      points: getPoints(data.priority)
+    });
+
+    res.json(issue);
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// ✅ UPDATE ISSUE (IMPORTANT)
+exports.updateIssue = async (req, res) => {
+  try {
+    const issue = await Issue.findById(req.params.id);
+
+    const oldStatus = issue.status;
+
+    Object.assign(issue, req.body);
+
+    // ✅ ADD POINTS WHEN DONE
+    if (oldStatus !== "Done" && req.body.status === "Done") {
+      await User.findByIdAndUpdate(issue.createdBy, {
+        $inc: { points: issue.points || 0 }
+      });
     }
-  };
 
-  // ✅ IMPORTANT FIX (avoid empty filter issue)
-  const userIssues = issues.filter(
-    (i) =>
-      i.createdBy === userId ||
-      i.assignedTo === userId ||
-      i.assignedTo === "Not Assigned" // optional safety
-  );
+    await issue.save();
 
-  // ✅ STATUS COUNT
-  const todo = userIssues.filter((i) => i.status === "To Do").length;
-  const progress = userIssues.filter((i) => i.status === "In Progress").length;
-  const done = userIssues.filter((i) => i.status === "Done").length;
+    res.json(issue);
 
-  // ✅ TOTAL POINTS (ALL ISSUES)
-  const totalPoints = userIssues.reduce((sum, issue) => {
-    return sum + (issue.points || getPoints(issue.priority));
-  }, 0);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
-  // ✅ EARNED POINTS (ONLY DONE)
-  const earnedPoints = userIssues
-    .filter((i) => i.status === "Done")
-    .reduce((sum, issue) => {
-      return sum + (issue.points || getPoints(issue.priority));
-    }, 0);
-
-  // 🏆 LEVEL SYSTEM
-  const getLevel = (points) => {
-    if (points >= 200) return "🏆 Expert";
-    if (points >= 100) return "🔥 Pro";
-    if (points >= 50) return "⭐ Intermediate";
-    return "🔰 Beginner";
-  };
-
-  // ✅ PIE DATA
-  const pieData = {
-    labels: ["To Do", "In Progress", "Done"],
-    datasets: [
-      {
-        data: [todo, progress, done],
-        backgroundColor: ["#f0ad4e", "#1da1d2", "#28a745"]
-      }
-    ]
-  };
-
-  // ✅ BAR DATA
-  const barData = {
-    labels: ["To Do", "In Progress", "Done"],
-    datasets: [
-      {
-        label: "Issues",
-        data: [todo, progress, done],
-        backgroundColor: ["#f0ad4e", "#1da1d2", "#28a745"]
-      }
-    ]
-  };
-
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false
-  };
-
-  return (
-    <div className="reports">
-
-      <h2>📊 Reports & Analytics</h2>
-
-      {/* SUMMARY */}
-      <div className="report-cards">
-        <div className="report-card">
-          <h3>Total</h3>
-          <p>{userIssues.length}</p>
-        </div>
-
-        <div className="report-card todo">
-          <h3>To Do</h3>
-          <p>{todo}</p>
-        </div>
-
-        <div className="report-card progress">
-          <h3>In Progress</h3>
-          <p>{progress}</p>
-        </div>
-
-        <div className="report-card done">
-          <h3>Done</h3>
-          <p>{done}</p>
-        </div>
-
-        {/* ✅ TOTAL POINTS */}
-        <div className="report-card">
-          <h3>Total Points</h3>
-          <p>{totalPoints}</p>
-        </div>
-      </div>
-
-      {/* CHARTS */}
-      <div className="charts">
-
-        <div className="chart-box">
-          <h3>📌 Status Distribution</h3>
-          <div className="chart-wrapper">
-            <Pie data={pieData} options={options} />
-          </div>
-        </div>
-
-        <div className="chart-box">
-          <h3>📊 Issue Progress</h3>
-          <div className="chart-wrapper">
-            <Bar data={barData} options={options} />
-          </div>
-        </div>
-
-        {/* 🏆 REWARDS */}
-        <div className="reward-box">
-          <h3>🏆 Rewards</h3>
-          <p className="points">{earnedPoints} Points</p>
-          <p className="level">{getLevel(earnedPoints)}</p>
-        </div>
-
-      </div>
-
-    </div>
-  );
-}
+// ✅ GET ISSUES
+exports.getIssues = async (req, res) => {
+  const issues = await Issue.find();
+  res.json(issues);
+};

@@ -1,7 +1,10 @@
 import React from "react";
 import "./Topbar.css";
+import { useNavigate } from "react-router-dom";
 
-export default function Topbar({ spaceName, onCreate }) {
+export default function Topbar({ spaceName, onCreate, onSearch }) {
+  const navigate = useNavigate();
+
   return (
     <div className="topbar">
 
@@ -15,16 +18,25 @@ export default function Topbar({ spaceName, onCreate }) {
 
         {/* SEARCH */}
         <div className="search-box">
-          <input placeholder="🔍 Search issues..." />
+          <input
+            placeholder="🔍 Search issues..."
+            onChange={(e) => onSearch && onSearch(e.target.value)} 
+            // ✅ FIX: prevent error if onSearch not passed
+          />
         </div>
 
         {/* CREATE BUTTON */}
         <button className="create-btn" onClick={onCreate}>
           + Create
         </button>
+        
 
         {/* PROFILE */}
-        <div className="profile">
+        <div
+          className="profile"
+          onClick={() => navigate("/app/settings")}
+          style={{ cursor: "pointer" }}
+        >
           <span>👤</span>
         </div>
 

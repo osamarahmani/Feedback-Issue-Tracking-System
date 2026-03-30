@@ -204,3 +204,103 @@ button:hover {
   color: #ffffff;
 }
 
+/* =========================
+   📱 MOBILE RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+
+  /* 🔥 FULL SCREEN MODAL */
+  .modal1 {
+    width: 95%;
+    max-height: 95vh;
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  /* 🔥 TEXT SIZE */
+  h2 {
+    font-size: 18px;
+  }
+
+  /* 🔥 GRID → 1 COLUMN */
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  /* 🔥 OPTION SMALL */
+  .option {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  /* 🔥 INPUT SMALL */
+  .input1 {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  /* 🔥 NAV BUTTONS STACK */
+  .nav {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav button {
+    width: 100%;
+  }
+
+  /* 🔥 SUBMIT BUTTON */
+  .submit-btn1 {
+    font-size: 14px;
+    padding: 12px;
+  }
+}
+
+/* =========================
+   📱 SMALL PHONES
+========================= */
+@media (max-width: 480px) {
+
+  .modal1 {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    padding: 15px;
+  }
+
+  /* 🔥 FULL SCREEN APP STYLE */
+  .modal-overlay1 {
+    align-items: flex-end;
+  }
+
+  h2 {
+    font-size: 16px;
+  }
+
+  .step-indicator {
+    font-size: 11px;
+  }
+
+  .option {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .input1 {
+    font-size: 12px;
+  }
+
+  /* 🔥 BUTTON TOUCH FRIENDLY */
+  button {
+    padding: 12px;
+    font-size: 14px;
+  }
+  .modal1 {
+  scrollbar-width: none;
+}
+
+.modal1::-webkit-scrollbar {
+  display: none;
+}
+}

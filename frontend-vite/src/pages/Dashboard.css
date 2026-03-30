@@ -262,3 +262,70 @@
     padding: 10px;
   }
 }
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+
+  /* 🔥 STACK LAYOUT */
+  .dashboard {
+    flex-direction: column;
+  }
+
+  /* 🔥 REMOVE EXTRA SPACE */
+  .dashboard-main {
+    padding-bottom: 70px; /* space for bottom navbar */
+  }
+
+  /* 🔥 BOARD SCROLL SMOOTH */
+  .board {
+    gap: 12px;
+    padding: 10px;
+    height: auto;
+  }
+
+  /* 🔥 SMALLER COLUMNS */
+  .column {
+    min-width: 260px;
+    padding: 10px;
+  }
+
+  /* 🔥 SMALLER CARDS */
+  .bug-card {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  /* 🔥 FLOAT BUTTON FIX */
+  .floating-btn {
+    bottom: 80px; /* above mobile navbar */
+    right: 15px;
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  /* 🔥 TEXT FIX */
+  .column h4 {
+    font-size: 14px;
+  }
+}
+
+/* =========================
+   EXTRA SMALL DEVICES
+========================= */
+@media (max-width: 480px) {
+
+  .column {
+    min-width: 220px;
+  }
+
+  .bug-card h5 {
+    font-size: 13px;
+  }
+
+  .desc {
+    font-size: 12px;
+  }
+
+}

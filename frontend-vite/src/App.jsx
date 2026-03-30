@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"; // ✅ ADD useEffect
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -8,8 +8,12 @@ import {
 
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ForgotPasswordPage from "./pages/forgotPasswordPage";
 import Onboarding from "./pages/Onboarding";
+import Users from "./pages/Users";
+import AdminIssues from "./pages/AdminIssues";
+import Assignees from "./pages/Asignees";
+
 
 // Layout system
 import Layout from "./pages/Layout";
@@ -22,7 +26,6 @@ import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
 
-  // ✅ APPLY THEME ON LOAD
   useEffect(() => {
     const theme = localStorage.getItem("theme");
 
@@ -33,7 +36,6 @@ function App() {
     }
   }, []);
 
-  const isConfigured = localStorage.getItem("config");
   const role = localStorage.getItem("role");
 
   return (
@@ -48,7 +50,7 @@ function App() {
         {/* ONBOARDING */}
         <Route path="/onboarding" element={<Onboarding />} />
 
-        {/* ADMIN */}
+        {/* ADMIN DASHBOARD */}
         <Route
           path="/admin"
           element={
@@ -58,15 +60,18 @@ function App() {
           }
         />
 
-        {/* USER DASHBOARD */}
-        <Route
-  path="/app"
-  element={<Layout />}
->
+        {/* USER + ADMIN PAGES UNDER /app */}
+        <Route path="/app" element={<Layout />}>
+
           <Route path="dashboard" element={<Home />} />
           <Route path="my-issues" element={<Issues />} />
           <Route path="reports" element={<Reports />} />
           <Route path="settings" element={<Settings />} />
+
+          {/* ✅ USERS PAGE FIXED */}
+          <Route path="users" element={<Users />} />
+          <Route path="issues" element={<AdminIssues />} />
+          <Route path="assignees" element={<Assignees />} />
         </Route>
 
       </Routes>

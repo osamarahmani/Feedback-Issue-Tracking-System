@@ -4,6 +4,8 @@ import IssueChatModal from "../components/IssueChatModal";
 import { useLocation } from "react-router-dom";
 import "./Issues.css";
 
+const API = "http://localhost:5000/api";
+
 export default function Issues() {
   const [issues, setIssues] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -14,10 +16,13 @@ export default function Issues() {
 
   // ✅ LOAD FROM BACKEND
   useEffect(() => {
-    fetch("http://localhost:5000/issues")
-      .then((res) => res.json())
+    fetch(`${API}/issues`)
+      .then(async (res) => {
+        if (!res.ok) throw new Error("Failed to fetch issues");
+        return res.json();
+      })
       .then((data) => setIssues(data))
-      .catch((err) => console.error(err));
+      .catch((err) => console.error("Fetch error:", err));
   }, []);
 
   // ✅ OPEN MODAL FROM URL
@@ -29,8 +34,11 @@ export default function Issues() {
   }, [location]);
 
   // ✅ FILTER USER ISSUES
-  const userIssues = issues.filter(
-    (i) => i.createdBy === userId || i.assignedTo === userId
+  const userIssues = (issues || []).filter(
+    (i) =>
+      i &&
+      i.createdBy &&
+      (i.createdBy === userId || i.assignedTo === userId)
   );
 
   // ✅ GROUP BY STATUS
@@ -44,7 +52,7 @@ export default function Issues() {
     return new Date(date).toLocaleString();
   };
 
-  // ✅ POINTS FALLBACK (IMPORTANT FIX)
+  // ✅ POINTS
   const getPoints = (priority) => {
     switch (priority) {
       case "Low": return 5;
@@ -54,6 +62,13 @@ export default function Issues() {
       case "Blocker": return 50;
       default: return 0;
     }
+  };
+
+  // ✅ FIX OBJECT RENDER ISSUE HERE
+  const renderName = (value) => {
+    if (!value) return "N/A";
+    if (typeof value === "object") return value.name;
+    return value;
   };
 
   // ✅ ISSUE CARD
@@ -89,16 +104,15 @@ export default function Issues() {
       </div>
 
       <div className="footer">
-        <span>👤 {issue.assignedTo}</span>
+        {/* 🔥 FIX OBJECT ERROR HERE */}
+        <span>👤 {renderName(issue.assignedTo)}</span>
         <span>📅 {issue.dueDate}</span>
       </div>
 
-      {/* ✅ CREATED TIME */}
       <p className="created-time">
         🕒 {formatDate(issue.createdAt)}
       </p>
 
-      {/* ✅ POINTS (FIXED) */}
       <p className="points">
         ⭐ {issue.points ?? getPoints(issue.priority)} pts
       </p>
@@ -108,7 +122,6 @@ export default function Issues() {
   return (
     <div className="issues-page">
 
-      {/* HEADER */}
       <div className="issues-header">
         <h2>My Issues</h2>
         <button onClick={() => setShowModal(true)}>
@@ -116,10 +129,8 @@ export default function Issues() {
         </button>
       </div>
 
-      {/* BOARD */}
       <div className="issues-board">
 
-        {/* TO DO */}
         <div className="column">
           <h3>To Do</h3>
           {todoIssues.length === 0
@@ -127,7 +138,6 @@ export default function Issues() {
             : todoIssues.map(renderCard)}
         </div>
 
-        {/* IN PROGRESS */}
         <div className="column">
           <h3>In Progress</h3>
           {progressIssues.length === 0
@@ -135,7 +145,6 @@ export default function Issues() {
             : progressIssues.map(renderCard)}
         </div>
 
-        {/* DONE */}
         <div className="column">
           <h3>Done</h3>
           {doneIssues.length === 0
@@ -145,23 +154,20 @@ export default function Issues() {
 
       </div>
 
-      {/* CREATE MODAL */}
       {showModal && (
         <CreateIssueModal
           onClose={() => setShowModal(false)}
-          onCreate={(issue) => {
-            setIssues((prev) => [...prev, issue]);
-            setShowModal(false);
-          }}
+          onCreate={(issue) =>
+            setIssues((prev) => [...prev, issue])
+          }
         />
       )}
 
-      {/* CHAT MODAL */}
       {selectedIssue && (
         <IssueChatModal
           issue={selectedIssue}
           onClose={() => setSelectedIssue(null)}
-          updateIssues={(updated) => setIssues(updated)}
+          updateIssues={setIssues}
         />
       )}
 

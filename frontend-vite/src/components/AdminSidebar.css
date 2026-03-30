@@ -1,5 +1,5 @@
 /* ===== DESKTOP SIDEBAR ===== */
-.sidebar {
+.admin-sidebar {
   width: 220px;
   height: 100vh;
   background: linear-gradient(180deg, #0d8ecf, #ffffff);
@@ -7,10 +7,13 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
 }
 
 /* LOGO */
-.logo {
+.admin-logo {
   margin-bottom: 30px;
   font-size: 20px;
   font-weight: 600;
@@ -18,12 +21,12 @@
 }
 
 /* MENU */
-.sidebar ul {
+.admin-sidebar ul {
   list-style: none;
   padding: 0;
 }
 
-.sidebar li {
+.admin-sidebar li {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -34,18 +37,18 @@
   transition: 0.3s;
 }
 
-/* ICON */
-.icon {
+/* ICON (if you add icons later) */
+.admin-icon {
   font-size: 16px;
 }
 
 /* HOVER */
-.sidebar li:hover {
+.admin-sidebar li:hover {
   background: rgba(255, 255, 255, 0.15);
 }
 
 /* ACTIVE */
-.sidebar li.active {
+.admin-sidebar li.active {
   background: white;
   color: #1da1d2;
   font-weight: 500;
@@ -55,7 +58,7 @@
    📱 MOBILE VIEW (BOTTOM NAV)
 ========================= */
 @media (max-width: 768px) {
-  .sidebar {
+  .admin-sidebar {
     width: 100%;
     height: 60px;
     position: fixed;
@@ -70,22 +73,22 @@
     padding: 0;
     z-index: 1000;
 
-    background: linear-gradient(90deg, #0d8ecf, #1da1d2); /* 🔥 better mobile gradient */
+    background: linear-gradient(90deg, #0d8ecf, #1da1d2);
   }
 
   /* HIDE LOGO */
-  .logo {
+  .admin-logo {
     display: none;
   }
 
   /* MENU HORIZONTAL */
-  .sidebar ul {
+  .admin-sidebar ul {
     display: flex;
     width: 100%;
     justify-content: space-around;
   }
 
-  .sidebar li {
+  .admin-sidebar li {
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -94,19 +97,25 @@
     gap: 2px;
   }
 
-  .icon {
+  .admin-icon {
     font-size: 20px;
   }
 
   /* ACTIVE MOBILE */
-  .sidebar li.active {
+  .admin-sidebar li.active {
     background: transparent;
     color: #ffffff;
     font-weight: 600;
   }
 }
-.icon {
-  font-size: 18px;
-  display: flex;
-  align-items: center;
+.admin-main {
+  margin-left: 220px;
+}
+
+/* Mobile fix */
+@media (max-width: 768px) {
+  .admin-main {
+    margin-left: 0;
+    margin-bottom: 60px;
+  }
 }

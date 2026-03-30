@@ -5,26 +5,36 @@ import { useNavigate } from "react-router-dom";
 export default function Home() {
   const navigate = useNavigate();
 
-  // ✅ ADD STATE
   const [issues, setIssues] = useState([]);
-
-  // ✅ FETCH FROM BACKEND
-  useEffect(() => {
-    fetch("http://localhost:5000/issues")
-      .then((res) => res.json())
-      .then((data) => setIssues(data))
-      .catch((err) => console.error(err));
-  }, []);
 
   const userId = localStorage.getItem("userId");
 
-const userIssues = issues.filter(
-  i => i.createdBy === userId || i.assignedTo === userId
-);
+  // ✅ FIXED API CALL
+  useEffect(() => {
+    fetch("http://localhost:5000/api/issues")
+      .then((res) => res.json())
+      .then((data) => setIssues(data))
+      .catch((err) => console.error("Fetch error:", err));
+  }, []);
 
-const total = userIssues.length;
-const inProgress = userIssues.filter(i => i.status === "In Progress").length;
-const resolved = userIssues.filter(i => i.status === "Done").length;
+  // ✅ SAFE FILTER (ObjectId safe)
+  const userIssues = issues.filter((i) => {
+    return (
+      i.createdBy === userId ||
+      i.assignedTo?._id === userId
+    );
+  });
+
+  // ✅ STATS
+  const total = userIssues.length;
+  const inProgress = userIssues.filter(
+    (i) => i.status === "In Progress"
+  ).length;
+
+  const resolved = userIssues.filter(
+    (i) => i.status === "Done"
+  ).length;
+
   return (
     <div className="home">
 
@@ -55,21 +65,21 @@ const resolved = userIssues.filter(i => i.status === "Done").length;
       </div>
 
       {/* DASHBOARD CARDS */}
-      <div className="cards">
+      <div className="cards10">
 
-        <div className="card">
-          <h3>📊 Total Issues</h3><br />
-          <p>{total}</p> {/* ✅ dynamic */}
+        <div className="card10">
+          <h3>📊 Total Issues</h3>
+          <center><p>{total}</p></center>
         </div>
 
-        <div className="card">
-          <h3>⏳ In Progress</h3><br />
-          <p>{inProgress}</p> {/* ✅ dynamic */}
+        <div className="card10">
+          <h3>⏳ In Progress</h3>
+          <center><p>{inProgress}</p></center>
         </div>
 
-        <div className="card">
-          <h3>✅ Resolved</h3><br />
-          <p>{resolved}</p> {/* ✅ dynamic */}
+        <div className="card10">
+          <h3>✅ Resolved</h3>
+          <center><p>{resolved}</p></center>
         </div>
 
       </div>
@@ -80,25 +90,17 @@ const resolved = userIssues.filter(i => i.status === "Done").length;
         <div className="info-card">
           <h3>📝 How it works</h3>
           <p>
-            The process starts when a user creates an issue from the “My Issues” section
-            by clicking the “+ New Issue” button and submitting the required details.
-            Once submitted, the issue is recorded with an initial status. The admin then
-            reviews the issue and assigns it to a responsible team member. After
-            assignment, the issue moves into progress where the user can continuously
-            track its status. Finally, once the problem is resolved, the issue is marked
-            as completed, ensuring a smooth and transparent workflow from start to end.
+            The process starts when a user creates an issue from the “My Issues”
+            section. The admin assigns it to a team member, then it moves through
+            workflow stages until resolved.
           </p>
         </div>
 
         <div className="info-card">
           <h3>🚀 Features</h3>
           <p>
-            This system provides real-time tracking of issues through a visual Kanban
-            workflow, allowing users to clearly see the progress of their requests. It
-            also includes a chat feature that enables direct communication between the
-            user and the assigned team member. With structured issue management and
-            admin control, the platform ensures efficient handling, assignment, and
-            resolution of issues in an organized manner.
+            Real-time issue tracking, admin assignment, status updates, and chat
+            support for smooth collaboration between users and developers.
           </p>
         </div>
 

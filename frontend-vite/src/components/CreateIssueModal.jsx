@@ -37,25 +37,23 @@ const handleSubmit = async () => {
 
     const newIssue = {
       ...data,
-      assignedTo: "Not Assigned", // ✅ DEFAULT
+      assignedTo: null,
       createdBy: userId,
       status: "To Do",
-        // ✅ FIXED
       createdAt: new Date().toISOString(),
-      createdTime: new Date().toLocaleString(),
       points: getPoints(data.priority)
     };
 
     const res = await axios.post(
-      "http://localhost:5000/issues",
+      "http://localhost:5000/api/issues",
       newIssue
     );
 
-    onCreate(res.data.issue);
+    onCreate(res.data);
     onClose();
 
   } catch (err) {
-    console.error(err);
+    console.error("Create issue failed:", err.response?.data || err.message);
     alert("Failed to create issue");
   }
 };

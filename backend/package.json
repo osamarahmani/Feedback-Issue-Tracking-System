@@ -4,6 +4,8 @@
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "mongoose": "^9.3.2",
-    "nodemailer": "^8.0.4"
+    "nodemailer": "^8.0.4",
+    "socket.io": "^4.8.3",
+    "socket.io-client": "^4.8.3"
   }
 }

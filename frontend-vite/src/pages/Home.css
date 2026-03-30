@@ -63,16 +63,16 @@
 }
 
 /* CARDS */
-.cards {
+.cards10 {
   display: flex;
   gap: 15px;
   margin-bottom: 25px;
-
-  width: 100%;
-  max-width: 1250px; /* ✅ aligned with hero */
+  margin-right: auto;
+  width: 90%;
+  max-width: 1400px; /* ✅ aligned with hero */
 }
 
-.card {
+.card10 {
   flex: 1;
   background: white;
   padding: 20px;
@@ -80,12 +80,13 @@
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
-.card h3 {
-  font-size: 14px;
-  color: #6b7280;
+.card10 h3 {
+  font-size: 18px;
+  color: #0151c1;
+
 }
 
-.card p {
+.card10 p {
   font-size: 24px;
   font-weight: bold;
   color: #1da1d2;

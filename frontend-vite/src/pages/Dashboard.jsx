@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom"; // ✅ ADD
+import { useLocation } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import KanbanBoard from "../components/KanbanBoard";
@@ -13,7 +13,9 @@ export default function Dashboard() {
   const [showModal, setShowModal] = useState(false);
   const [selectedIssue, setSelectedIssue] = useState(null);
 
-  const location = useLocation(); // ✅ ADD
+  const [search, setSearch] = useState(""); // ✅ ADD SEARCH
+
+  const location = useLocation();
   const userId = localStorage.getItem("userId");
 
   useEffect(() => {
@@ -34,15 +36,28 @@ export default function Dashboard() {
   // ✅ HANDLE SIDEBAR NAVIGATION
   useEffect(() => {
     if (location.pathname === "/dashboard/issues") {
-      setShowModal(true); // open modal when clicking Issues
+      setShowModal(true);
     } else {
       setShowModal(false);
     }
   }, [location]);
 
+  // ✅ FILTER USER ISSUES
   const userIssues = issues.filter(
     (i) => i.createdBy === userId || i.assignedTo === userId
   );
+
+  // 🔍 SEARCH FILTER
+  const filteredIssues = userIssues.filter((issue) => {
+  const text = search.toLowerCase();
+
+  return (
+    issue.title?.toLowerCase().includes(text) ||
+    issue.description?.toLowerCase().includes(text) ||
+    issue.status?.toLowerCase().includes(text) ||
+    issue.priority?.toLowerCase().includes(text)
+  );
+});
 
   const handleCreateIssue = (issue) => {
     const newIssue = {
@@ -73,9 +88,10 @@ export default function Dashboard() {
         <Topbar
           spaceName={config.spaceName}
           onCreate={() => setShowModal(true)}
+          onSearch={setSearch} // ✅ PASS SEARCH
         />
 
-        {/* ✅ RIGHT PANEL CONTENT BASED ON ROUTE */}
+        {/* CONTENT */}
         <div className="board-container">
 
           {location.pathname === "/dashboard" && (
@@ -90,16 +106,18 @@ export default function Dashboard() {
             <h2>Settings ⚙️</h2>
           )}
 
-          {/* Default board */}
+          {/* ✅ KANBAN WITH FILTERED DATA */}
           {(location.pathname === "/dashboard" ||
             location.pathname === "/dashboard/issues") && (
             <KanbanBoard
               workflow={config.workflow}
-              issues={userIssues}
+              issues={filteredIssues} // 🔥 USE FILTERED
               onCardClick={(issue) => setSelectedIssue(issue)}
             />
           )}
-
+           {filteredIssues.length === 0 && (
+  <p style={{ textAlign: "center" }}>No matching issues found 🔍</p>
+)}
         </div>
 
         {/* FLOAT BUTTON */}

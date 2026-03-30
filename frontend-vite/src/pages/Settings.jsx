@@ -7,52 +7,120 @@ export default function Settings() {
     email: ""
   });
 
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: "",
+    newPassword: "",
+    otp: ""
+  });
+
+  const [step, setStep] = useState(1); // ✅ STEP CONTROL
+
   const [points, setPoints] = useState(0);
-  const [theme, setTheme] = useState("light"); // ✅ ADD STATE
+  const [notifications, setNotifications] = useState(true);
 
-  // ✅ LOAD USER + POINTS + THEME
+  const userId = localStorage.getItem("userId");
+
+  // ✅ FETCH USER
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    const issues = JSON.parse(localStorage.getItem("issues")) || [];
-    const savedTheme = localStorage.getItem("theme") || "light";
-
-    if (storedUser) setUser(storedUser);
-
-    // ✅ TOTAL POINTS
-    const totalPoints = issues.reduce((sum, i) => sum + (i.points || 0), 0);
-    setPoints(totalPoints);
-
-    // ✅ APPLY THEME
-    setTheme(savedTheme);
-    if (savedTheme === "dark") {
-      document.body.classList.add("dark");
-    }
-  }, []);
+    fetch(`http://localhost:5000/users/${userId}`)
+      .then(res => res.json())
+      .then(data => {
+        setUser({
+          name: data.name || "",
+          email: data.email || ""
+        });
+        setPoints(data.points || 0);
+      })
+      .catch(err => console.error(err));
+  }, [userId]);
 
   // ✅ SAVE PROFILE
-  const handleSave = () => {
-    localStorage.setItem("user", JSON.stringify(user));
-    alert("Profile updated!");
-  };
+  const handleSave = async () => {
+    try {
+      await fetch(`http://localhost:5000/users/${userId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(user)
+      });
 
-  // ✅ DARK MODE TOGGLE (FIXED)
-  const toggleTheme = () => {
-    if (theme === "dark") {
-      document.body.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-      setTheme("light");
-    } else {
-      document.body.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-      setTheme("dark");
+      alert("Profile updated!");
+    } catch (err) {
+      alert("Error updating profile");
     }
   };
 
-  // ✅ CLEAR DATA
-  const clearData = () => {
-    localStorage.clear();
-    alert("All data cleared!");
-    window.location.reload();
+  // ✅ SEND OTP
+  const sendOtp = async () => {
+    if (!passwordData.currentPassword) {
+      return alert("Enter current password");
+    }
+
+    try {
+      const res = await fetch("http://localhost:5000/send-otp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email: user.email })
+      });
+
+      const data = await res.json();
+
+      alert(data.message);
+
+      if (data.message === "OTP sent to email") {
+        setStep(2);
+      }
+
+    } catch {
+      alert("Error sending OTP");
+    }
+  };
+
+  // ✅ VERIFY OTP + CHANGE PASSWORD
+  const changePassword = async () => {
+    if (!passwordData.otp || !passwordData.newPassword) {
+      return alert("Fill all fields");
+    }
+
+    try {
+      const res = await fetch("http://localhost:5000/verify-otp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: user.email,
+          otp: passwordData.otp,
+          newPassword: passwordData.newPassword
+        })
+      });
+
+      const data = await res.json();
+
+      alert(data.message);
+
+      if (data.message === "Password reset successful") {
+        setPasswordData({
+          currentPassword: "",
+          newPassword: "",
+          otp: ""
+        });
+        setStep(1);
+      }
+
+    } catch {
+      alert("Error updating password");
+    }
+  };
+
+  // ✅ NOTIFICATIONS
+  const toggleNotifications = () => {
+    const newValue = !notifications;
+    setNotifications(newValue);
+    localStorage.setItem("notifications", newValue);
   };
 
   // ✅ LOGOUT
@@ -61,8 +129,21 @@ export default function Settings() {
     window.location.href = "/";
   };
 
+  // ✅ DELETE ACCOUNT
+  const deactivateAccount = () => {
+    if (window.confirm("Are you sure?")) {
+      fetch(`http://localhost:5000/users/${userId}`, {
+        method: "DELETE"
+      }).then(() => {
+        localStorage.clear();
+        window.location.href = "/";
+      });
+    }
+  };
+
   return (
     <div className="settings">
+
       <h2>⚙ Settings</h2>
 
       {/* PROFILE */}
@@ -72,7 +153,6 @@ export default function Settings() {
         <input
           type="text"
           value={user.name}
-          placeholder="Name"
           onChange={(e) =>
             setUser({ ...user, name: e.target.value })
           }
@@ -81,7 +161,6 @@ export default function Settings() {
         <input
           type="email"
           value={user.email}
-          placeholder="Email"
           onChange={(e) =>
             setUser({ ...user, email: e.target.value })
           }
@@ -90,27 +169,95 @@ export default function Settings() {
         <button onClick={handleSave}>Save</button>
       </div>
 
+      {/* PASSWORD */}
+      <div className="card">
+        <h3>🔐 Change Password</h3>
+
+        {step === 1 && (
+          <>
+            <input
+              type="password"
+              placeholder="Current Password"
+              value={passwordData.currentPassword}
+              onChange={(e) =>
+                setPasswordData({
+                  ...passwordData,
+                  currentPassword: e.target.value
+                })
+              }
+            />
+
+            <button onClick={sendOtp}>
+              Send OTP
+            </button>
+          </>
+        )}
+
+        {step === 2 && (
+          <>
+            <input
+              type="text"
+              placeholder="Enter OTP"
+              value={passwordData.otp}
+              onChange={(e) =>
+                setPasswordData({
+                  ...passwordData,
+                  otp: e.target.value
+                })
+              }
+            />
+
+            <input
+              type="password"
+              placeholder="New Password"
+              value={passwordData.newPassword}
+              onChange={(e) =>
+                setPasswordData({
+                  ...passwordData,
+                  newPassword: e.target.value
+                })
+              }
+            />
+
+            <button onClick={changePassword}>
+              Update Password
+            </button>
+          </>
+        )}
+      </div>
+
       {/* POINTS */}
       <div className="card">
         <h3>🏆 Reward Points</h3>
         <p className="points">{points} pts</p>
       </div>
 
-      {/* THEME */}
+      {/* NOTIFICATIONS */}
       <div className="card">
-        <h3>🌙 Theme</h3>
-        <button onClick={toggleTheme}>
-          {theme === "dark" ? "Switch to Light" : "Switch to Dark"}
-        </button>
+        <h3>🔔 Notifications</h3>
+
+        <div className="toggle-row">
+          <span>Enable Notifications</span>
+          <div
+            className={`toggle ${notifications ? "active" : ""}`}
+            onClick={toggleNotifications}
+          >
+            <div className="circle"></div>
+          </div>
+        </div>
       </div>
 
       {/* DANGER */}
       <div className="card danger">
         <h3>⚠ Danger Zone</h3>
 
-        <button onClick={clearData}>Clear Data</button>
         <button onClick={logout}>Logout</button>
+
+        <button className="danger-btn" onClick={deactivateAccount}>
+          Delete Account
+        </button>
       </div>
+
     </div>
   );
 }

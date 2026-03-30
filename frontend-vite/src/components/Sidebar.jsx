@@ -2,15 +2,18 @@ import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Sidebar.css";
 
+// Import icons
+import { FaTachometerAlt, FaBug, FaChartLine, FaCog } from "react-icons/fa";
+
 export default function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
 
   const menu = [
-    { name: "Dashboard", path: "/app/dashboard", icon: "📊" },
-    { name: "My Issues", path: "/app/my-issues", icon: "🐞" },
-    { name: "Reports", path: "/app/reports", icon: "📈" },
-    { name: "Settings", path: "/app/settings", icon: "⚙️" }
+    { name: "Dashboard", path: "/app/dashboard", icon: <FaTachometerAlt /> },
+    { name: "My Issues", path: "/app/my-issues", icon: <FaBug /> },
+    { name: "Reports", path: "/app/reports", icon: <FaChartLine /> },
+    { name: "Settings", path: "/app/settings", icon: <FaCog /> }
   ];
 
   return (

@@ -2,14 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import "./IssueChatModal.css";
 import { socket } from "../socket";
 
-export default function IssueChatModal({ issue, onClose }) {
+export default function AdminIssueChatModal({ issue, onClose }) {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState(issue?.messages || []);
 
   const chatEndRef = useRef(null);
 
-  const userId = localStorage.getItem("userId");
-  const userName = localStorage.getItem("userName");
+  const adminId = localStorage.getItem("adminId") || "admin";
+  const adminName = localStorage.getItem("adminName") || "Admin";
 
   const issueId = issue?._id;
 
@@ -46,8 +46,8 @@ export default function IssueChatModal({ issue, onClose }) {
     if (!message.trim()) return;
 
     const msgData = {
-      senderId: userId,
-      senderName: userName,
+      senderId: adminId,
+      senderName: adminName,
       text: message,
       time: new Date().toLocaleTimeString(),
     };
@@ -66,7 +66,7 @@ export default function IssueChatModal({ issue, onClose }) {
       <div className="chat-modal" onClick={(e) => e.stopPropagation()}>
 
         <div className="chat-header">
-          <h3>💬 Issue Chat</h3>
+          <h3>🛠 Admin Chat</h3>
         </div>
 
         <div className="chat-box">
@@ -78,7 +78,7 @@ export default function IssueChatModal({ issue, onClose }) {
             <div
               key={i}
               className={`chat-msg ${
-                msg.senderId === userId ? "user" : "other"
+                msg.senderId === adminId ? "user" : "other"
               }`}
             >
               <strong>{msg.senderName}</strong>
@@ -92,7 +92,7 @@ export default function IssueChatModal({ issue, onClose }) {
 
         <div className="chat-input">
           <input
-            placeholder="Type your message..."
+            placeholder="Type admin message..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}

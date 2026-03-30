@@ -246,3 +246,20 @@
     width: 100%;
   }
 }
+
+.strength {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.strength.weak {
+  color: red;
+}
+
+.strength.medium {
+  color: orange;
+}
+
+.strength.strong {
+  color: green;
+}

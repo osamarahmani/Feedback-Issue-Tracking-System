@@ -22,48 +22,62 @@ ChartJS.register(
 
 export default function Reports() {
   const [issues, setIssues] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const userId = localStorage.getItem("userId");
 
   // ✅ FETCH FROM BACKEND
   useEffect(() => {
-    fetch("http://localhost:5000/issues")
+    fetch("http://localhost:5000/api/issues")
       .then((res) => res.json())
-      .then((data) => setIssues(data))
-      .catch((err) => console.error(err));
+      .then((data) => {
+        console.log("API DATA:", data);
+        setIssues(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error:", err);
+        setLoading(false);
+      });
   }, []);
 
-  // 🎯 POINT FUNCTION (fallback)
-  const getPoints = (priority) => {
-    switch (priority) {
-      case "Low": return 5;
-      case "Medium": return 10;
-      case "High": return 20;
-      case "Critical": return 30;
-      case "Blocker": return 50;
-      default: return 0;
-    }
-  };
+  // 🎯 POINTS FALLBACK
+ const getPoints = (priority) => {
+  const p = priority?.trim();
 
-  // ✅ FILTER USER ISSUES
+  switch (p) {
+    case "Low": return 5;
+    case "Medium": return 10;
+    case "High": return 20;
+    case "Critical": return 30;
+    case "Blocker": return 50;
+    default: return 0;
+  }
+};
+
+
+  // ✅ FIX: Ensure string compare
   const userIssues = issues.filter(
-    (i) => i.createdBy === userId || i.assignedTo === userId
+    (i) =>
+      String(i.createdBy) === String(userId) ||
+      String(i.assignedTo) === String(userId)
   );
 
-  // ✅ STATUS COUNT
+  // ✅ STATUS COUNTS
   const todo = userIssues.filter((i) => i.status === "To Do").length;
   const progress = userIssues.filter((i) => i.status === "In Progress").length;
   const done = userIssues.filter((i) => i.status === "Done").length;
 
-  // ✅ TOTAL POINTS (ALL)
+  // ✅ TOTAL POINTS
   const totalPoints = userIssues.reduce((sum, issue) => {
-    return sum + (issue.points || getPoints(issue.priority));
+    return sum + (issue.points ?? getPoints(issue.priority));
   }, 0);
 
-  // ✅ EARNED POINTS (ONLY DONE)
+  // ✅ EARNED POINTS
   const earnedPoints = userIssues
     .filter((i) => i.status === "Done")
     .reduce((sum, issue) => {
-      return sum + (issue.points || getPoints(issue.priority));
+      return sum + (issue.points ?? getPoints(issue.priority));
     }, 0);
 
   // 🏆 LEVEL SYSTEM
@@ -74,7 +88,7 @@ export default function Reports() {
     return "🔰 Beginner";
   };
 
-  // ✅ PIE DATA
+  // ✅ CHART DATA
   const pieData = {
     labels: ["To Do", "In Progress", "Done"],
     datasets: [
@@ -85,7 +99,6 @@ export default function Reports() {
     ]
   };
 
-  // ✅ BAR DATA
   const barData = {
     labels: ["To Do", "In Progress", "Done"],
     datasets: [
@@ -102,9 +115,10 @@ export default function Reports() {
     maintainAspectRatio: false
   };
 
+  if (loading) return <h2>Loading reports...</h2>;
+
   return (
     <div className="reports">
-
       <h2>📊 Reports & Analytics</h2>
 
       {/* SUMMARY */}
@@ -129,7 +143,6 @@ export default function Reports() {
           <p>{done}</p>
         </div>
 
-        {/* ✅ TOTAL POINTS */}
         <div className="report-card">
           <h3>Total Points</h3>
           <p>{totalPoints}</p>
@@ -138,7 +151,6 @@ export default function Reports() {
 
       {/* CHARTS */}
       <div className="charts">
-
         <div className="chart-box">
           <h3>📌 Status Distribution</h3>
           <div className="chart-wrapper">
@@ -153,15 +165,7 @@ export default function Reports() {
           </div>
         </div>
 
-        {/* 🏆 REWARDS */}
-        <div className="reward-box">
-          <h3>🏆 Rewards</h3>
-          <p className="points">{earnedPoints} Points</p>
-          <p className="level">{getLevel(earnedPoints)}</p>
-        </div>
-
       </div>
-
     </div>
   );
 }

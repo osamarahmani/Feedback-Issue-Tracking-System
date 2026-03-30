@@ -1,0 +1,164 @@
+/* PAGE */
+.admin-content {
+  padding: 20px;
+  background: #f4f6f8;
+  min-height: 100vh;
+  
+}
+
+body.dark .admin-content {
+  background: #0f172a;
+}
+
+/* HEADER */
+.admin-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.admin-heading h2 {
+  color: #0d8ecf;
+}
+
+/* BOARD */
+.admin-board {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* COLUMN */
+.admin-col {
+  flex: 1;
+  background: #ebecf0;
+  padding: 12px;
+  border-radius: 10px;
+  min-height: 400px;
+}
+
+/* COLUMN TITLE */
+.admin-col h3 {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #5e6c84;
+}
+
+/* CARD */
+.admin-card {
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.admin-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* TITLE */
+.admin-title {
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #172b4d;
+}
+
+/* ROW */
+.admin-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+/* TYPE */
+.admin-type {
+  font-size: 12px;
+  background: #dfe1e6;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+/* PRIORITY */
+.admin-priority {
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.admin-priority.low {
+  background: #e3fcef;
+  color: #006644;
+}
+
+.admin-priority.medium {
+  background: #fff4e5;
+  color: #974f0c;
+}
+
+.admin-priority.high {
+  background: #ffebe6;
+  color: #bf2600;
+}
+
+.admin-priority.critical {
+  background: #ffe6e6;
+  color: #d60000;
+}
+
+.admin-priority.blocker {
+  background: #172b4d;
+  color: white;
+}
+
+/* DESCRIPTION */
+.admin-desc {
+  font-size: 12px;
+  color: #5e6c84;
+  margin-bottom: 6px;
+}
+
+/* DROPDOWN */
+.admin-dropdown {
+  width: 100%;
+  margin-top: 6px;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 12px;
+  background: #f9fafc;
+}
+
+/* FOOTER */
+.admin-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #6b778c;
+  margin-top: 8px;
+}
+
+/* EMPTY */
+.empty {
+  text-align: center;
+  color: #6b778c;
+  margin-top: 20px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .admin-board {
+    flex-direction: column;
+  }
+
+  .admin-col {
+    width: 100%;
+  }
+
+  .admin-card {
+    font-size: 13px;
+  }
+}
