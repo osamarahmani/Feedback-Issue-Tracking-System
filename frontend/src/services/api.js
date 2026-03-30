@@ -1,8 +1,8 @@
-const BASE_URL = "https://feedback-issue-tracking-system.onrender.com/api";
+const BASE_URL = "https://feedback-issue-tracking-system.onrender.com";
 
 // Signup
 export const signup = async (data) => {
-  return fetch(`${BASE_URL}/auth/signup`, {
+  return fetch(`${BASE_URL}/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -13,7 +13,7 @@ export const signup = async (data) => {
 
 // Login
 export const login = async (data) => {
-  return fetch(`${BASE_URL}/auth/login`, {
+  return fetch(`${BASE_URL}/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
