@@ -1,0 +1,137 @@
+  /* 🔥 ICON BUTTON STYLE */
+/* =========================
+   TOPBAR BASE
+========================= */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 12px 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* LEFT */
+.topbar-left h3 {
+  color: #1da1d2;
+  font-weight: 600;
+}
+
+/* RIGHT ACTIONS */
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* SEARCH BOX */
+.search-box {
+  background: #f1f5f9;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  width: 180px;
+}
+
+/* CREATE BUTTON */
+.create-btn {
+  background: linear-gradient(135deg, #1da1d2, #0d8ecf);
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.create-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(29, 161, 210, 0.3);
+}
+
+/* PROFILE ICON */
+.profile {
+  width: 35px;
+  height: 35px;
+  background: #e0f2fe;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1da1d2;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* =========================
+   📱 MOBILE VIEW
+========================= */
+@media (max-width: 768px) {
+
+  .topbar {
+    padding: 10px;
+  }
+
+  /* 🔥 TITLE SMALL */
+  .topbar-left h3 {
+    font-size: 14px;
+  }
+
+  /* 🔥 STACK RIGHT SIDE */
+  .topbar-actions {
+    gap: 8px;
+  }
+
+  /* 🔥 SEARCH SMALL */
+  .search-box input {
+    width: 100px;
+    font-size: 12px;
+  }
+
+  /* 🔥 BUTTON SMALL */
+  .create-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  /* 🔥 PROFILE SMALL */
+  .profile {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+}
+
+/* =========================
+   📱 EXTRA SMALL (PHONES)
+========================= */
+@media (max-width: 480px) {
+
+  /* 🔥 HIDE TITLE (SAVE SPACE) */
+  .topbar-left h3 {
+    display: none;
+  }
+
+  /* 🔥 FULL WIDTH SEARCH */
+  .search-box {
+    flex: 1;
+  }
+
+  .search-box input {
+    width: 100%;
+  }
+
+  /* 🔥 ICON BUTTON STYLE */
+  .create-btn {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+}

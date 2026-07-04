@@ -1,0 +1,306 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* =========================
+   OVERLAY
+========================= */
+.modal-overlay1 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* =========================
+   MODAL CARD
+========================= */
+.modal1 {
+  position: relative;
+  width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 35px;
+
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+
+  /* 🔥 animation */
+  animation: fadeInScale 0.3s ease;
+}
+
+/* =========================
+   ANIMATION
+========================= */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* =========================
+   CLOSE BUTTON
+========================= */
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 18px;
+  font-size: 22px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #6b778c;
+  transition: 0.2s;
+}
+
+.close-btn:hover {
+  color: #ff4d4f;
+  transform: scale(1.1);
+}
+
+/* =========================
+   STEP INDICATOR
+========================= */
+.step-indicator {
+  text-align: right;
+  font-size: 12px;
+  color: #6b778c;
+  margin-bottom: 15px;
+}
+
+/* =========================
+   HEADINGS
+========================= */
+h2 {
+  margin-bottom: 20px;
+  color: #172b4d;
+}
+
+/* =========================
+   GRID OPTIONS
+========================= */
+/* GRID LAYOUT */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* ✅ 2 per row */
+  gap: 10px;
+}
+/* OPTION */
+.option {
+  padding: 12px;
+  border: 1px solid #dfe1e6;
+  border-radius: 8px;
+  background: #fafbfc;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.option:hover {
+  border-color: #0052cc;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+.option.active {
+  background: #e9f2ff;
+  border-color: #0052cc;
+  color: #0052cc;
+}
+
+/* =========================
+   INPUTS
+========================= */
+.input1 {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.2s;
+}
+
+.input1.submit-btn1:hover {
+  border-color: #0052cc;
+  box-shadow: 0 0 0 2px rgba(0,82,204,0.1);
+}
+
+/* TEXTAREA FIX */
+textarea.input1 {
+  min-height: 90px;
+  resize: none;
+}
+
+/* =========================
+   NAV BUTTONS
+========================= */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+/* BUTTON */
+button {
+  padding: 10px 16px;
+  border: none;
+  background: #0052cc;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #003f9e;
+}
+
+/* SUBMIT */
+.submit-btn1 {
+  width: 100%;
+  margin-top: 12px;
+  background: #0052cc;
+}
+
+.submit-btn1:hover {
+  background: #003f9e;
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+.modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+/* EXTRA PRIORITIES */
+.priority.critical {
+  background: #ffe6e6;
+  color: #d60000;
+}
+
+.priority.blocker {
+  background: #2d2d2d;
+  color: #ffffff;
+}
+
+/* =========================
+   📱 MOBILE RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+
+  /* 🔥 FULL SCREEN MODAL */
+  .modal1 {
+    width: 95%;
+    max-height: 95vh;
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  /* 🔥 TEXT SIZE */
+  h2 {
+    font-size: 18px;
+  }
+
+  /* 🔥 GRID → 1 COLUMN */
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  /* 🔥 OPTION SMALL */
+  .option {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  /* 🔥 INPUT SMALL */
+  .input1 {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  /* 🔥 NAV BUTTONS STACK */
+  .nav {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav button {
+    width: 100%;
+  }
+
+  /* 🔥 SUBMIT BUTTON */
+  .submit-btn1 {
+    font-size: 14px;
+    padding: 12px;
+  }
+}
+
+/* =========================
+   📱 SMALL PHONES
+========================= */
+@media (max-width: 480px) {
+
+  .modal1 {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    padding: 15px;
+  }
+
+  /* 🔥 FULL SCREEN APP STYLE */
+  .modal-overlay1 {
+    align-items: flex-end;
+  }
+
+  h2 {
+    font-size: 16px;
+  }
+
+  .step-indicator {
+    font-size: 11px;
+  }
+
+  .option {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .input1 {
+    font-size: 12px;
+  }
+
+  /* 🔥 BUTTON TOUCH FRIENDLY */
+  button {
+    padding: 12px;
+    font-size: 14px;
+  }
+  .modal1 {
+  scrollbar-width: none;
+}
+
+.modal1::-webkit-scrollbar {
+  display: none;
+}
+}

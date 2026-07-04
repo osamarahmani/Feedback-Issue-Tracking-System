@@ -1,0 +1,331 @@
+/* MAIN LAYOUT */
+.dashboard {
+  display: flex;
+  height: 100vh;
+  background: #f7fbfe;
+}
+
+/* MAIN CONTENT AREA */
+.dashboard-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* BOARD CONTAINER */
+.board-container {
+  flex: 1;
+  padding: 20px;
+  overflow-x: auto;
+}
+
+/* LOADING */
+.loading {
+  text-align: center;
+  margin-top: 200px;
+  color: #1da1d2;
+  font-size: 20px;
+}
+
+/* FLOATING BUTTON */
+.floating-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: linear-gradient(135deg, #1da1d2, #0d8ecf);
+  color: white;
+  border: none;
+  padding: 14px 18px;
+  border-radius: 50px;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(29, 161, 210, 0.3);
+  transition: 0.3s;
+}
+
+.floating-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(29, 161, 210, 0.4);
+}
+
+/* ISSUE LIST (OPTIONAL EXTRA VIEW) */
+.issue-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 20px;
+}
+
+/* ISSUE CARD */
+.issue-card {
+  width: 250px;
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+.issue-card:hover {
+  transform: translateY(-3px);
+}
+
+/* TITLE */
+.issue-card h4 {
+  color: #1da1d2;
+  margin-bottom: 8px;
+}
+
+/* TEXT */
+.issue-card p {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+/* STATUS */
+.issue-card b {
+  color: #0d8ecf;
+}
+
+/* CHAT BUTTON */
+.issue-card button {
+  margin-top: 8px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  background: #eef3f7;
+  color: #1da1d2;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.issue-card button:hover {
+  background: #d6ecfa;
+}
+
+/* SCROLLBAR */
+.board-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.board-container::-webkit-scrollbar-thumb {
+  background: #cfe8f3;
+  border-radius: 10px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .floating-btn {
+    right: 15px;
+    bottom: 20px;
+  }
+}
+
+
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* =========================
+   BOARD (HORIZONTAL COLUMNS)
+========================= */
+.board {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  overflow-x: auto;
+  height: calc(100vh - 80px);
+}
+
+/* =========================
+   COLUMN
+========================= */
+.column {
+  min-width: 300px;
+  background: #f4f7fb;
+  padding: 15px;
+  border-radius: 12px;
+
+  display: flex;
+  flex-direction: column; /* 🔥 cards vertical */
+}
+
+/* COLUMN TITLE */
+.column h4 {
+  margin-bottom: 15px;
+  color: #1da1d2;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* =========================
+   CARD (VERTICAL STACK)
+========================= */
+.bug-card {
+  background: #ffffff;
+  padding: 14px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+/* HOVER */
+.bug-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+/* TITLE */
+.bug-card h5 {
+  font-size: 15px;
+  color: #172b4d;
+  margin-bottom: 6px;
+}
+
+/* DESCRIPTION */
+.desc {
+  font-size: 13px;
+  color: #6b778c;
+  margin-bottom: 8px;
+}
+
+/* =========================
+   PRIORITY BADGES
+========================= */
+.priority {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+/* COLORS */
+.priority.low {
+  background: #e3fcef;
+  color: #006644;
+}
+
+.priority.medium {
+  background: #fff4e5;
+  color: #b26a00;
+}
+
+.priority.high {
+  background: #ffebe6;
+  color: #bf2600;
+}
+
+/* =========================
+   META INFO
+========================= */
+.meta {
+  font-size: 12px;
+  color: #5e6c84;
+  margin-top: 4px;
+}
+
+/* =========================
+   SCROLLBAR STYLE
+========================= */
+.board::-webkit-scrollbar {
+  height: 8px;
+}
+
+.board::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .column {
+    min-width: 250px;
+  }
+
+  .bug-card {
+    padding: 10px;
+  }
+}
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+
+  /* 🔥 STACK LAYOUT */
+  .dashboard {
+    flex-direction: column;
+  }
+
+  /* 🔥 REMOVE EXTRA SPACE */
+  .dashboard-main {
+    padding-bottom: 70px; /* space for bottom navbar */
+  }
+
+  /* 🔥 BOARD SCROLL SMOOTH */
+  .board {
+    gap: 12px;
+    padding: 10px;
+    height: auto;
+  }
+
+  /* 🔥 SMALLER COLUMNS */
+  .column {
+    min-width: 260px;
+    padding: 10px;
+  }
+
+  /* 🔥 SMALLER CARDS */
+  .bug-card {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  /* 🔥 FLOAT BUTTON FIX */
+  .floating-btn {
+    bottom: 80px; /* above mobile navbar */
+    right: 15px;
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  /* 🔥 TEXT FIX */
+  .column h4 {
+    font-size: 14px;
+  }
+}
+
+/* =========================
+   EXTRA SMALL DEVICES
+========================= */
+@media (max-width: 480px) {
+
+  .column {
+    min-width: 220px;
+  }
+
+  .bug-card h5 {
+    font-size: 13px;
+  }
+
+  .desc {
+    font-size: 12px;
+  }
+
+}
